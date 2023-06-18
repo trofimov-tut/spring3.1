@@ -2,7 +2,6 @@ package com.trofimov.spring3.spring31.controllers;
 
 import com.trofimov.spring3.spring31.models.User;
 import com.trofimov.spring3.spring31.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -11,10 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    public void setUserService(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -43,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping(value = "users/edit/{id}")
-    public String editUser(ModelMap model, @PathVariable("id") int id) {
+    public String editUser(ModelMap model, @PathVariable("id") Long id) {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         return "editUser";
@@ -56,13 +54,13 @@ public class UserController {
     }
 
     @GetMapping("users/delete")
-    public String deleteUserById(@RequestParam("id") int id) {
+    public String deleteUserById(@RequestParam("id") Long id) {
         userService.deleteUser(id);
         return "redirect:/";
     }
 
     @GetMapping("users/{id}")
-    public String show(@PathVariable("id") int id, ModelMap modelMap) {
+    public String show(@PathVariable("id") Long id, ModelMap modelMap) {
         modelMap.addAttribute("user", userService.getUserById(id));
         return "show";
     }
