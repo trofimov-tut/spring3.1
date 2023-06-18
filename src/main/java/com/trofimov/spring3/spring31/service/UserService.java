@@ -1,45 +1,18 @@
 package com.trofimov.spring3.spring31.service;
 
 import com.trofimov.spring3.spring31.models.User;
-import com.trofimov.spring3.spring31.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
-@Service
-@Transactional(readOnly = true)
-public class UserService {
+public interface UserService {
 
-    private final UserRepository userRepository;
+    void addUser(User user);
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    List<User> getAllUsers();
 
-    @Transactional
-    public void addUser(User user) {
-        userRepository.save(user);
-    }
+    void deleteUser(Long id);
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+    void editUser(User user);
 
-    @Transactional
-    public void deleteUser(int id) {
-        userRepository.deleteById(id);
-    }
-
-    @Transactional
-    public void editUser(User user) {
-        userRepository.save(user);
-    }
-
-    public User getUserById(int id) {
-        return userRepository.findById(id).orElse(null);
-    }
+    User getUserById(Long id);
 
 }
